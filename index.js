@@ -2,13 +2,21 @@ function query(selector, element) {
   return query.one(selector, element);
 }
 
+var one = function(selector, element) {
+  return element.querySelector(selector);
+}
+
+var all = function(selector, element) {
+  return element.querySelectorAll(selector);
+}
+
 query.one = function(selector, element) {
   if (!selector) {
     return;
   }
   if (typeof selector === "string") {
     element = element || document;
-    return element.querySelector(selector);
+    return one(selector, element);
   }
   if (selector.length !== undefined) {
     return selector[0];
@@ -28,7 +36,7 @@ query.all = function(selector, element){
     list = selector;
   } else {
     element = element || document;
-    list = element.querySelectorAll(selector);
+    list = all(selector, element);
   }
   return Array.prototype.slice.call(list);
 };
@@ -40,8 +48,8 @@ query.engine = function(engine){
   if (!engine.all) {
     throw new Error('.all callback required');
   }
-  query.one = engine.one;
-  query.all = engine.all;
+  one = engine.one;
+  all = engine.all;
   return query;
 };
 

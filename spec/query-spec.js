@@ -108,11 +108,14 @@ describe("query()", function() {
 
       query.engine({
         one: function() { return "one"; },
-        all: function() { return "all"; }
+        all: function() { return ["all"]; }
       });
 
-      expect(query.one()).toBe("one");
-      expect(query.all()).toBe("all");
+      expect(query.one()).toBe(undefined);
+      expect(query.all()).toEqual([]);
+
+      expect(query.one("li")).toBe("one");
+      expect(query.all("li")).toEqual(["all"]);
 
     });
 
